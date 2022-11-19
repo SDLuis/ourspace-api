@@ -10,7 +10,8 @@ import {
 
 export enum role {
   Admin = 'admin',
-  Poster = 'client'
+  VerifyUser = 'verify user',
+  User = 'user'
 }
 export interface IUser {
   User_ID?: number | null
