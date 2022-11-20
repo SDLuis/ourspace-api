@@ -1,9 +1,9 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
 import dbConfig from '../config/db.config'
-import { commentModel } from './comment'
-import { postModel } from './post'
-import { userModel } from './user'
+import { commentModel } from './comment.model'
+import { postModel } from './post.model'
+import { userModel } from './user.model'
 
 const sequelize = new Sequelize(
   dbConfig.database as string,
