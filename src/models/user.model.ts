@@ -7,6 +7,11 @@ import {
   AllowNull,
   Unique
 } from 'sequelize-typescript'
+import { JwtPayload } from 'jsonwebtoken'
+
+export interface CustomRequest extends Request {
+  token: string | JwtPayload
+}
 
 export enum role {
   Admin = 'admin',
