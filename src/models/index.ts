@@ -1,6 +1,8 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
 import dbConfig from '../config/db.config'
+import { commentModel } from './comment'
+import { postModel } from './post'
 import { userModel } from './user'
 
 const sequelize = new Sequelize(
@@ -9,7 +11,7 @@ const sequelize = new Sequelize(
   dbConfig.password,
   {
     host: dbConfig.host,
-    models: [userModel],
+    models: [userModel, postModel, commentModel],
     dialect: dbConfig.dialect as Dialect,
     pool: {
       max: dbConfig.pool.max,
@@ -24,5 +26,12 @@ const db = {
   Sequelize,
   sequelize
 }
+
+userModel.hasMany(postModel, { foreignKey: 'User_ID' })
+postModel.belongsTo(userModel, { foreignKey: 'User_ID' })
+userModel.hasMany(commentModel, { foreignKey: 'User_ID' })
+commentModel.belongsTo(userModel, { foreignKey: 'User_ID' })
+postModel.hasMany(commentModel, { foreignKey: 'Post_ID' })
+commentModel.belongsTo(postModel, { foreignKey: 'Post_ID' })
 
 export default db
