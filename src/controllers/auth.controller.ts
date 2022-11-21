@@ -18,7 +18,8 @@ export const login = async (req: Request, res: Response): Promise<any> => {
   try {
     const paramsToLogin = authValidation.toLogin(req.body)
     const response = await authService.Login(paramsToLogin)
-    if (typeof response === 'object') {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (response.token) {
       // WORKINGG!!!!!!!
       const token = response.token
       res.cookie('jwt', token, {
