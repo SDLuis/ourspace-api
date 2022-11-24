@@ -11,6 +11,7 @@ import { JwtPayload } from 'jsonwebtoken'
 
 export interface CustomRequest extends Request {
   token: string | JwtPayload
+  user: number
 }
 
 export enum role {
@@ -23,12 +24,12 @@ export interface IUser {
   First_Name: string
   Last_Name: string
   role: role
-  email: string
+  user: string
   password: any
 }
 
 export interface login {
-  email: string
+  user: string
   password: string
 }
 
@@ -59,21 +60,21 @@ export class userModel extends Model implements IUser {
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(100)
+    type: DataType.STRING(50)
   })
     First_Name!: string
 
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(100)
+    type: DataType.STRING(50)
   })
     Last_Name!: string
 
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(100)
+    type: DataType.STRING(50)
   })
     role!: role
 
@@ -81,9 +82,9 @@ export class userModel extends Model implements IUser {
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(100)
+    type: DataType.STRING(50)
   })
-    email!: string
+    user!: string
 
   @NotEmpty
   @AllowNull(false)

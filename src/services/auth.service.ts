@@ -21,17 +21,17 @@ export const addUser = async (newUserEntry: NewUserEntry): Promise<NewUserEntry 
       First_Name: newUserEntry.First_Name,
       Last_Name: newUserEntry.Last_Name,
       role: 'user',
-      email: newUserEntry.email,
+      user: newUserEntry.user,
       password: await bcrypt.hash(
         newUserEntry.password.toString(),
         +authConfig.rounds
       )
     }
-    const user = await userModel.findOne({ where: { email: newUser.email } })
+    const user = await userModel.findOne({ where: { user: newUser.user } })
     if (user) {
       const Error: Error = {
-        name: 'Email always exist',
-        message: 'This email is not available'
+        name: 'User always exist',
+        message: 'This user is not available'
       }
       return Error
     } else {
@@ -48,7 +48,7 @@ export const Login = async (
 ): Promise<any> => {
   try {
     const user = await userModel.findOne({
-      where: { email: authParams.email }
+      where: { user: authParams.user }
     })
     const role = user?.role
 
