@@ -17,12 +17,12 @@ test.afterAll(async () => {
 test('register', async ({ request }) => {
   const FirstName: string = 'Luis'
   const LastName: string = 'Tejeda'
-  const email: string = 'test@gmail.com'
+  const userParam: string = 'test'
   const user = await request.post(`${HOST}/auth/register`, {
     data: {
       First_Name: FirstName,
       Last_Name: LastName,
-      email,
+      user: userParam,
       password: 123
     }
   })
@@ -34,7 +34,7 @@ test('register', async ({ request }) => {
 test('login', async ({ request }) => {
   const login = await request.post(`${HOST}/auth/login`, {
     data: {
-      email: 'luis@gmail.com',
+      user: 'luis',
       password: '123'
     }
   })
