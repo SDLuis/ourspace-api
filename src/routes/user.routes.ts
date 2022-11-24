@@ -5,10 +5,10 @@ import * as authController from '../controllers/auth.controller'
 import * as policies from '../libs/policies'
 const router = Router()
 
-router.get('/', authController.auth, policies.Admin, userController.getUser)
-router.put('/edit/:id', authController.auth, policies.Admin, userController.editUser)
-router.get('/find/:email', authController.auth, policies.Admin, userController.findUserByEmail)
-router.get('/:id', authController.auth, policies.Admin, userController.findUser)
+router.get('/', userController.getUser)
+router.put('/edit/:id', authController.auth, userController.reqUser, policies.owner, userController.editUser)
+router.get('/find/:user', userController.findUserByUser)
+router.get('/:id', userController.findUser)
 router.delete('/delete/:id', authController.auth, policies.Admin, userController.deleteUser)
 
 export default router

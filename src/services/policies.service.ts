@@ -23,3 +23,11 @@ export const ownerAccess = (user: any, job: any, role: role): string | boolean |
     return 'Access denied'
   }
 }
+
+export const owner = (user: any, userId: any, role: role): string | boolean | undefined => {
+  if (user === userId || role === 'admin') {
+    return true
+  } else {
+    return 'Access denied'
+  }
+}

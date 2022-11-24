@@ -1,4 +1,6 @@
-import { Request, Response } from 'express'
+/* eslint-disable @typescript-eslint/naming-convention */
+import { NextFunction, Request, Response } from 'express'
+import { CustomRequest } from '../models/user.model'
 import * as userService from '../services/user.service'
 import * as userValidation from '../validations/user.validation'
 
@@ -36,11 +38,11 @@ export const findUser = async (req: Request, res: Response): Promise<any> => {
     res.status(400).send(e.message)
   }
 }
-export const findUserByEmail = async (req: Request, res: Response): Promise<any> => {
+export const findUserByUser = async (req: Request, res: Response): Promise<any> => {
   try {
-    const email = req.params.email
-    const user = await userService.findUserByEmail(email)
-    res.status(200).send(user)
+    const user = req.params.user
+    const userFound = await userService.findUserByUser(user)
+    res.status(200).send(userFound)
   } catch (e: any) {
     res.status(400).send(e.message)
   }
@@ -56,6 +58,17 @@ export const deleteUser = async (req: Request, res: Response): Promise<any> => {
         res.status(400).send('Error')
       }
     })
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const reqUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = +req.params.id
+    const User = (await userService.findUser(id));
+    (req as any as CustomRequest).user = User as any
+    next()
   } catch (e: any) {
     res.status(400).send(e.message)
   }

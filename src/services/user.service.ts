@@ -16,10 +16,10 @@ export const getUsers = async (): Promise<userEntry[]> => {
 }
 
 /* eslint-disable */
-export const getUsersWithoutSensitiveInfo = (Jobs: NotSensistiveInfoUser[]): NotSensistiveInfoUser[] => {
-  return Jobs.map(({ User_ID, First_Name, Last_Name, role, email }) => {
+export const getUsersWithoutSensitiveInfo = (User: NotSensistiveInfoUser[]): NotSensistiveInfoUser[] => {
+  return User.map(({ User_ID, First_Name, Last_Name, role, user }) => {
     return {
-      User_ID, First_Name, Last_Name, role, email
+      User_ID, First_Name, Last_Name, role, user
     }
   })
 }
@@ -29,7 +29,7 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
     First_Name: editUserEntry.First_Name,
     Last_Name: editUserEntry.Last_Name,
     role: editUserEntry.role,
-    email: editUserEntry.email,
+    user: editUserEntry.user,
     password: await bcrypt.hash(
       editUserEntry.password.toString(),
       +authConfig.rounds
@@ -42,12 +42,12 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
 }
 
 export const findUser = (id: number): Promise<userEntry[]> | undefined => {
-  return userModel.findOne({ where: { User_ID: id } }) as any
+  return userModel.findOne({ attributes: {exclude: ['password']}, where: { User_ID: id } }) as any
 }
-export const findUserByEmail = (email: string): Promise<userEntry[]> | undefined => {
-  return userModel.findOne({ where: { email: email } }) as any
+export const findUserByUser = (user: string): Promise<userEntry[]> | undefined => {
+  return userModel.findOne({ attributes: {exclude: ['password']}, where: { user: user } }) as any
 }
 
 export const deleteUser = (id: number): Promise<number> | undefined => {
-  return userModel.destroy({ where: { User_ID: id } }) as any
+  return userModel.destroy({ where: { User_ID: id } })
 }
