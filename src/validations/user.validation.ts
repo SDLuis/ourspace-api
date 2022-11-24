@@ -22,11 +22,11 @@ const parseRole = (RoleFromRequest: any): role => {
   return RoleFromRequest
 }
 
-export const parseEmail = (emailFromRequest: any): string => {
-  if (!isString(emailFromRequest) || notEmpty(emailFromRequest)) {
-    throw new Error('Invalid Email')
+export const parseuser = (userFromRequest: any): string => {
+  if (!isString(userFromRequest) || notEmpty(userFromRequest)) {
+    throw new Error('Invalid user')
   }
-  return emailFromRequest
+  return userFromRequest
 }
 
 const parsePassword = (passwordFromRequest: any): string => {
@@ -40,7 +40,7 @@ export const toNewUser = (object: any): NewUserEntry => {
   const newUser: NewUserEntry = {
     First_Name: parseFirstName(object.First_Name),
     Last_Name: parseLastName(object.Last_Name),
-    email: parseEmail(object.email),
+    user: parseuser(object.user),
     password: parsePassword(object.password)
   }
   return newUser
@@ -50,7 +50,7 @@ export const toEditUser = (object: any): EditUserEntry => {
     First_Name: parseFirstName(object.First_Name),
     Last_Name: parseLastName(object.Last_Name),
     role: parseRole(object.role),
-    email: parseEmail(object.email),
+    user: parseuser(object.user),
     password: parsePassword(object.password)
   }
   return newUser
