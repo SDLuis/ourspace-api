@@ -14,8 +14,9 @@ export enum postType {
 }
 export interface IPost {
   Post_ID?: number
-  Product_Type: postType
+  Post_Type: postType
   User_ID?: number
+  Location?: string
   img: string
   img_ID: string
   description: string
@@ -26,7 +27,7 @@ export interface IPost {
 }
 
 export type postEntry = IPost
-export type NotSensistiveInfoPost = Omit<IPost, 'User_ID' | 'userModel'>
+export type NotSensistiveInfoPost = Omit<IPost, 'userModel'>
 export type NewPostEntry = Omit<IPost, 'Post_ID' | 'userModel' | 'commentModel' | 'createdAt' | 'updatedAt'>
 export type IPostWithoutUserAndCommentModel = Omit<IPost, 'userModel' | 'commentModel'>
 
@@ -55,19 +56,26 @@ export class postModel extends Model implements IPostWithoutUserAndCommentModel 
   @Column({
     type: DataType.STRING(50)
   })
-    Product_Type!: postType
+    Post_Type!: postType
 
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(1000)
+    type: DataType.STRING(30)
+  })
+    Location?: string | undefined
+
+  @NotEmpty
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING(100)
   })
     img!: string
 
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(1000)
+    type: DataType.STRING(50)
   })
     img_ID!: string
 
