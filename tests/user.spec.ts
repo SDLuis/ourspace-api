@@ -47,7 +47,7 @@ test.describe('need auth', () => {
   })
 
   test('find user by user', async ({ request }) => {
-    const userParam = 'test'
+    const userParam = 'edit'
     const user = await request.get(`${HOST}/users/find/${userParam}`)
     expect(user.ok()).toBeTruthy()
     expect(await user.json()).toHaveProperty('user', userParam)
