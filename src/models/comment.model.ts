@@ -19,8 +19,8 @@ export interface IComment {
 }
 
 export type commentEntry = IComment
-export type NotSensistiveInfoComment = Omit<IComment, 'User_ID' | 'userModel'>
 export type NewCommentEntry = Omit<IComment, 'Comment_ID' | 'userModel' | 'postModel' | 'createdAt' | 'updatedAt'>
+export type EditCommentEntry = Pick<IComment, 'description'>
 export type ICommentWithoutUserAndPostModel = Omit<IComment, 'userModel' | 'postModel'>
 
 @Table({
