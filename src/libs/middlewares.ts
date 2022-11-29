@@ -4,6 +4,7 @@ import authRoutes from '../routes/auth.routes'
 import userRoutes from '../routes/user.routes'
 import postRoutes from '../routes/post.routes'
 import commentRoutes from '../routes/comment.routes'
+import reactionRoutes from '../routes/reaction.routes'
 import cookieparser from 'cookie-parser'
 import { v2 as cloudinary } from 'cloudinary'
 
@@ -28,6 +29,7 @@ app.use('/users', userRoutes)
 app.use('/auth', authRoutes)
 app.use('/posts', postRoutes)
 app.use('/comments', commentRoutes)
+app.use('/reactions', reactionRoutes)
 app.get('/', (_req, res) => {
   res.status(200).send('WELCOME!!')
 })
