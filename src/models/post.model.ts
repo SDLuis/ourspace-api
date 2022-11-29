@@ -24,19 +24,21 @@ export interface IPost {
   updatedAt: Date
   userModel: object
   commentModel: object
+  reactionModel: object
+
 }
 
 export type postEntry = IPost
 export type NotSensistiveInfoPost = Omit<IPost, 'userModel'>
-export type NewPostEntry = Omit<IPost, 'Post_ID' | 'userModel' | 'commentModel' | 'createdAt' | 'updatedAt'>
-export type IPostWithoutUserAndCommentModel = Omit<IPost, 'userModel' | 'commentModel'>
+export type NewPostEntry = Omit<IPost, 'Post_ID' | 'userModel' | 'commentModel' | 'reactionModel' | 'createdAt' | 'updatedAt'>
+export type IPostWithoutModels = Omit<IPost, 'userModel' | 'commentModel' | 'reactionModel'>
 
 @Table({
   tableName: 'post',
   timestamps: true
 })
 
-export class postModel extends Model implements IPostWithoutUserAndCommentModel {
+export class postModel extends Model implements IPostWithoutModels {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
