@@ -1,12 +1,14 @@
 import { userModel } from '../models/user.model'
 import '../models/index'
-import { postType, postEntry, postModel, NewPostEntry, NotSensistiveInfoPost, IPostWithoutUserAndCommentModel } from '../models/post.model'
+import { postType, postEntry, postModel, NewPostEntry, NotSensistiveInfoPost, IPostWithoutModels } from '../models/post.model'
 import { commentModel } from '../models/comment.model'
+import { reactionModel } from '../models/reaction.model'
 
 export const getPosts = async (): Promise<postEntry[]> => {
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
-      { model: commentModel }],
+      { model: commentModel },
+      { model: reactionModel }],
     order: [
       ['Post_ID', 'DESC']
     ]
@@ -18,7 +20,7 @@ export const getPosts = async (): Promise<postEntry[]> => {
 export const getPostsWithoutSensitiveInfo = (posts: postEntry[]): NotSensistiveInfoPost[] => {
   return posts.map(
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    ({ Post_ID, Post_Type, User_ID, Location, img, img_ID, description, createdAt, updatedAt, commentModel }) => {
+    ({ Post_ID, Post_Type, User_ID, Location, img, img_ID, description, createdAt, updatedAt, commentModel, reactionModel }) => {
       return {
         Post_ID,
         Post_Type,
@@ -29,7 +31,9 @@ export const getPostsWithoutSensitiveInfo = (posts: postEntry[]): NotSensistiveI
         description,
         createdAt,
         updatedAt,
-        commentModel
+        commentModel,
+        reactionModel
+
       }
     }
   )
@@ -75,11 +79,11 @@ export const deletePost = (id: number): Promise<number> | undefined => {
   return postModel.destroy({ where: { Post_ID: id } })
 }
 
-export const ownPosts = (id: number): Promise<IPostWithoutUserAndCommentModel[]> | undefined => {
+export const ownPosts = (id: number): Promise<IPostWithoutModels[]> | undefined => {
   return postModel.findAll({ where: { User_ID: id }, order: [['Post_ID', 'DESC']] })
 }
 
-export const findPostByUser = (id: number): Promise<IPostWithoutUserAndCommentModel[]> | undefined => {
+export const findPostByUser = (id: number): Promise<IPostWithoutModels[]> | undefined => {
   return postModel.findAll({
     include: { model: commentModel },
     where: { User_ID: id }
