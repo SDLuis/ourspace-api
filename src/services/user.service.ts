@@ -17,9 +17,9 @@ export const getUsers = async (): Promise<userEntry[]> => {
 
 /* eslint-disable */
 export const getUsersWithoutSensitiveInfo = (User: NotSensistiveInfoUser[]): NotSensistiveInfoUser[] => {
-  return User.map(({ User_ID, First_Name, Last_Name, role, user }) => {
+  return User.map(({ User_ID, First_Name, Last_Name, role, user, img, img_ID }) => {
     return {
-      User_ID, First_Name, Last_Name, role, user
+      User_ID, First_Name, Last_Name, role, user, img, img_ID
     }
   })
 }
@@ -30,6 +30,8 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
     Last_Name: editUserEntry.Last_Name,
     role: editUserEntry.role,
     user: editUserEntry.user,
+    img: editUserEntry.img,
+    img_ID: editUserEntry.img_ID,
     password: await bcrypt.hash(
       editUserEntry.password.toString(),
       +authConfig.rounds

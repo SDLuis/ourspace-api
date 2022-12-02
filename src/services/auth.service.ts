@@ -22,6 +22,8 @@ export const addUser = async (newUserEntry: NewUserEntry): Promise<NewUserEntry 
       Last_Name: newUserEntry.Last_Name,
       role: 'user',
       user: newUserEntry.user,
+      img: newUserEntry.img,
+      img_ID: newUserEntry.img_ID,
       password: await bcrypt.hash(
         newUserEntry.password.toString(),
         +authConfig.rounds

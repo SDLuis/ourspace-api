@@ -22,7 +22,7 @@ const parseRole = (RoleFromRequest: any): role => {
   return RoleFromRequest
 }
 
-export const parseuser = (userFromRequest: any): string => {
+export const parseUser = (userFromRequest: any): string => {
   if (!isString(userFromRequest) || notEmpty(userFromRequest)) {
     throw new Error('Invalid user')
   }
@@ -40,8 +40,10 @@ export const toNewUser = (object: any): NewUserEntry => {
   const newUser: NewUserEntry = {
     First_Name: parseFirstName(object.First_Name),
     Last_Name: parseLastName(object.Last_Name),
-    user: parseuser(object.user),
-    password: parsePassword(object.password)
+    user: parseUser(object.user),
+    password: parsePassword(object.password),
+    img: object.img,
+    img_ID: object.img_ID
   }
   return newUser
 }
@@ -50,8 +52,10 @@ export const toEditUser = (object: any): EditUserEntry => {
     First_Name: parseFirstName(object.First_Name),
     Last_Name: parseLastName(object.Last_Name),
     role: parseRole(object.role),
-    user: parseuser(object.user),
-    password: parsePassword(object.password)
+    user: parseUser(object.user),
+    password: parsePassword(object.password),
+    img: object.img,
+    img_ID: object.img_ID
   }
   return newUser
 }

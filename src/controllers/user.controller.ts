@@ -3,6 +3,8 @@ import { NextFunction, Request, Response } from 'express'
 import { CustomRequest } from '../models/user.model'
 import * as userService from '../services/user.service'
 import * as userValidation from '../validations/user.validation'
+import { v2 as cloudinary } from 'cloudinary'
+import fs from 'fs'
 
 export const getUser = async (_req: Request, res: Response): Promise<any> => {
   try {
@@ -16,13 +18,39 @@ export const getUser = async (_req: Request, res: Response): Promise<any> => {
 
 export const editUser = async (req: Request, res: Response): Promise<any> => {
   try {
-    const id = +req.params.id
-    const paramsToEdit = userValidation.toEditUser(req.body)
-    const User = await userService.editUser(id, paramsToEdit)
-    if (+User === 1) {
-      res.status(200).send('User Edit')
+    if (req.file != null) {
+      const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path)
+      fs.unlink(req.file?.path, function (err) {
+        if (err != null) {
+          console.log(err)
+        }
+      })
+      const body = {
+        First_Name: req.body.First_Name,
+        Last_Name: req.body.Last_Name,
+        role: req.body.role,
+        user: req.body.user,
+        password: req.body.password,
+        img: secure_url,
+        img_ID: public_id
+      }
+      const id = +req.params.id
+      const paramsToEdit = userValidation.toEditUser(body)
+      const User = await userService.editUser(id, paramsToEdit)
+      if (+User === 1) {
+        res.status(200).send('User Edit')
+      } else {
+        res.status(400).send('Error')
+      }
     } else {
-      res.status(400).send('Error')
+      const id = +req.params.id
+      const paramsToEdit = userValidation.toEditUser(req.body)
+      const User = await userService.editUser(id, paramsToEdit)
+      if (+User === 1) {
+        res.status(200).send('User Edit')
+      } else {
+        res.status(400).send('Error')
+      }
     }
   } catch (e: any) {
     res.status(400).send(e.message)

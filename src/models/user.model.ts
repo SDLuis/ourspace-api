@@ -24,6 +24,8 @@ export interface IUser {
   First_Name: string
   Last_Name: string
   role: role
+  img: string
+  img_ID: string
   user: string
   password: any
 }
@@ -92,4 +94,16 @@ export class userModel extends Model implements IUser {
     type: DataType.STRING(100)
   })
     password!: string
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.STRING(100)
+  })
+    img!: string
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.STRING(50)
+  })
+    img_ID!: string
 }

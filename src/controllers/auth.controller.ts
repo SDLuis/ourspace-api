@@ -1,14 +1,38 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Request, Response, NextFunction } from 'express'
 import * as authService from '../services/auth.service'
 import * as userValidation from '../validations/user.validation'
 import * as authValidation from '../validations/auth.validation'
 import { CustomRequest } from '../models/user.model'
+import { v2 as cloudinary } from 'cloudinary'
+import fs from 'fs'
 
 export const register = async (req: Request, res: Response): Promise<any> => {
   try {
-    const NewUserEntry = userValidation.toNewUser(req.body)
-    const response = await authService.addUser(NewUserEntry)
-    res.status(200).send(response)
+    if (req.file != null) {
+      const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path)
+      fs.unlink(req.file?.path, function (err) {
+        if (err != null) {
+          console.log(err)
+        }
+      })
+      const body = {
+        First_Name: req.body.First_Name,
+        Last_Name: req.body.Last_Name,
+        role: req.body.role,
+        user: req.body.user,
+        password: req.body.password,
+        img: secure_url,
+        img_ID: public_id
+      }
+      const NewUserEntry = userValidation.toNewUser(body)
+      const response = await authService.addUser(NewUserEntry)
+      res.status(200).send(response)
+    } else {
+      const NewUserEntry = userValidation.toNewUser(req.body)
+      const response = await authService.addUser(NewUserEntry)
+      res.status(200).send(response)
+    }
   } catch (e: any) {
     res.status(400).send(e.message)
   }

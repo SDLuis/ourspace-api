@@ -1,7 +1,7 @@
 import { login } from '../models/user.model'
 import { isString, notEmpty } from '../utils/utils'
 
-const parseuser = (userFromRequest: any): string => {
+const parseUser = (userFromRequest: any): string => {
   if (!isString(userFromRequest) || notEmpty(userFromRequest)) {
     throw new Error('Invalid user')
   }
@@ -17,7 +17,7 @@ const parsePassword = (passwordFromRequest: any): string => {
 
 export const toLogin = (object: any): login => {
   const login: login = {
-    user: parseuser(object.user),
+    user: parseUser(object.user),
     password: parsePassword(object.password)
   }
   return login
