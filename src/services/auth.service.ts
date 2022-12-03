@@ -61,10 +61,10 @@ export const Login = async (
       )
       if (validPassword) {
         const token = jsonwebtoken.sign(
-          { id: user.User_ID },
-          authConfig.secret,
+          { id: user.User_ID, name: `${user.First_Name} ${user.Last_Name}`, user: user.user },
+          'ourspace',
           {
-            expiresIn: '2h'
+            expiresIn: '24h'
           }
         )
         const res = {
