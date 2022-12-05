@@ -97,7 +97,7 @@ export const auth = async (
   try {
     const decoded = (jsonwebtoken.verify(
       token,
-      authConfig.secret
+      'ourspace'
     )) as IDecoded
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!decoded) {
