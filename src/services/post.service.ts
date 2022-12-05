@@ -80,12 +80,22 @@ export const deletePost = (id: number): Promise<number> | undefined => {
 }
 
 export const ownPosts = (id: number): Promise<IPostWithoutModels[]> | undefined => {
-  return postModel.findAll({ where: { User_ID: id }, order: [['Post_ID', 'DESC']] })
+  return postModel.findAll({
+    include: [{ model: userModel, attributes: { exclude: ['password'] } },
+      { model: commentModel },
+      { model: reactionModel }
+    ],
+    where: { User_ID: id },
+    order: [['Post_ID', 'DESC']]
+  })
 }
 
 export const findPostByUser = (id: number): Promise<IPostWithoutModels[]> | undefined => {
   return postModel.findAll({
-    include: { model: commentModel },
+    include: [{ model: userModel, attributes: { exclude: ['password'] } },
+      { model: commentModel },
+      { model: reactionModel }
+    ],
     where: { User_ID: id }
   })
 }
