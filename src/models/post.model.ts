@@ -68,14 +68,14 @@ export class postModel extends Model implements IPostWithoutModels {
     Location?: string | undefined
 
   @NotEmpty
-  @AllowNull(false)
+  @AllowNull(true)
   @Column({
     type: DataType.STRING(100)
   })
     img!: string
 
   @NotEmpty
-  @AllowNull(false)
+  @AllowNull(true)
   @Column({
     type: DataType.STRING(50)
   })
