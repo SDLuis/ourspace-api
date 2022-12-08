@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { NextFunction, Request, Response } from 'express'
 import { CustomRequest } from '../models/user.model'
@@ -32,7 +33,9 @@ export const editUser = async (req: Request, res: Response): Promise<any> => {
         user: req.body.user,
         password: req.body.password,
         img: secure_url,
-        img_ID: public_id
+        img_ID: public_id,
+        Location: req.body.Location,
+        Date_Of_Birth: req.body.Date_Of_Birth
       }
       const id = +req.params.id
       const paramsToEdit = userValidation.toEditUser(body)
@@ -51,6 +54,34 @@ export const editUser = async (req: Request, res: Response): Promise<any> => {
       } else {
         res.status(400).send('Error')
       }
+    }
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const editCover = async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (req.file != null) {
+      const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path)
+      fs.unlink(req.file?.path, function (err) {
+        if (err != null) {
+          console.log(err)
+        }
+      })
+      const body = {
+        cover: secure_url,
+        cover_ID: public_id
+      }
+      const id = +req.params.id
+      const User = await userService.editCover(id, body)
+      if (+User === 1) {
+        res.status(200).send('Cover Edit')
+      } else {
+        res.status(400).send('Error')
+      }
+    } else {
+      res.status(200).send('Upload a cover')
     }
   } catch (e: any) {
     res.status(400).send(e.message)
@@ -79,6 +110,9 @@ export const findUserByUser = async (req: Request, res: Response): Promise<any> 
 export const deleteUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
+    const { img_ID, cover_ID } = await userService.findUser(id) as any
+    img_ID != null ? await cloudinary.uploader.destroy(img_ID as string) : ''
+    cover_ID != null ? await cloudinary.uploader.destroy(cover_ID as string) : ''
     await userService.deleteUser(id)?.then((result: any) => {
       if (result === 1) {
         res.status(200).send('User deleted')

@@ -8,6 +8,7 @@ const router = Router()
 
 router.get('/', userController.getUser)
 router.put('/edit/:id', authController.auth, userController.reqUser, policies.owner, upload.single('image'), userController.editUser)
+router.put('/cover/:id', authController.auth, userController.reqUser, policies.owner, upload.single('image'), userController.editCover)
 router.get('/find/:user', userController.findUserByUser)
 router.get('/:id', userController.findUser)
 router.delete('/delete/:id', authController.auth, policies.Admin, userController.deleteUser)
