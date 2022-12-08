@@ -5,7 +5,8 @@ import {
   NotEmpty,
   Table,
   AllowNull,
-  Unique
+  Unique,
+  Default
 } from 'sequelize-typescript'
 import { JwtPayload } from 'jsonwebtoken'
 
@@ -23,9 +24,13 @@ export interface IUser {
   User_ID?: number | null
   First_Name: string
   Last_Name: string
+  Date_Of_Birth: Date
+  Location: string
   role: role
   img: string
   img_ID: string
+  cover: string
+  cover_ID: string
   user: string
   password: any
 }
@@ -43,8 +48,8 @@ export interface IDecoded {
 
 export type userEntry = IUser
 export type NotSensistiveInfoUser = Omit<IUser, 'password'>
-export type NewUserEntry = Omit<IUser, 'User_ID' | 'role'>
-export type EditUserEntry = Omit<IUser, 'User_ID'>
+export type NewUserEntry = Omit<IUser, 'User_ID' | 'role' | 'Location' | 'cover' | 'cover_ID' | 'Date_Of_Birth'>
+export type EditUserEntry = Omit<IUser, 'User_ID' | 'cover' | 'cover_ID' >
 
 @Table({
   tableName: 'user',
@@ -74,7 +79,15 @@ export class userModel extends Model implements IUser {
     Last_Name!: string
 
   @NotEmpty
-  @AllowNull(false)
+  @AllowNull(true)
+  @Column({
+    type: DataType.DATE
+  })
+    Date_Of_Birth!: Date
+
+  @NotEmpty
+  @AllowNull(true)
+  @Default('user')
   @Column({
     type: DataType.STRING(50)
   })
@@ -97,6 +110,12 @@ export class userModel extends Model implements IUser {
 
   @AllowNull(true)
   @Column({
+    type: DataType.STRING(60)
+  })
+    Location!: string
+
+  @AllowNull(true)
+  @Column({
     type: DataType.STRING(100)
   })
     img!: string
@@ -106,4 +125,16 @@ export class userModel extends Model implements IUser {
     type: DataType.STRING(50)
   })
     img_ID!: string
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.STRING(100)
+  })
+    cover!: string
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.STRING(50)
+  })
+    cover_ID!: string
 }
