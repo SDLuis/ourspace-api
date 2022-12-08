@@ -7,7 +7,8 @@ import {
   userEntry,
   NewUserEntry,
   IDecoded,
-  NotSensistiveInfoUser
+  NotSensistiveInfoUser,
+  role
 } from '../models/user.model'
 import authConfig from '../config/auth.config'
 
@@ -20,7 +21,7 @@ export const addUser = async (newUserEntry: NewUserEntry): Promise<NewUserEntry 
     const newUser = {
       First_Name: newUserEntry.First_Name,
       Last_Name: newUserEntry.Last_Name,
-      role: 'user',
+      role: 'user' as role,
       user: newUserEntry.user,
       img: newUserEntry.img,
       img_ID: newUserEntry.img_ID,

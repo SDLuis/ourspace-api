@@ -17,9 +17,9 @@ export const getUsers = async (): Promise<userEntry[]> => {
 
 /* eslint-disable */
 export const getUsersWithoutSensitiveInfo = (User: NotSensistiveInfoUser[]): NotSensistiveInfoUser[] => {
-  return User.map(({ User_ID, First_Name, Last_Name, role, user, img, img_ID }) => {
+  return User.map(({ User_ID, First_Name, Last_Name, Location, Date_Of_Birth, role, user, img, img_ID, cover, cover_ID }) => {
     return {
-      User_ID, First_Name, Last_Name, role, user, img, img_ID
+      User_ID, First_Name, Last_Name, Location, Date_Of_Birth, role, user, img, img_ID, cover, cover_ID
     }
   })
 }
@@ -28,6 +28,8 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
   const editUser = {
     First_Name: editUserEntry.First_Name,
     Last_Name: editUserEntry.Last_Name,
+    Location: editUserEntry.Location,
+    Date_Of_Birth: editUserEntry.Date_Of_Birth,
     role: editUserEntry.role,
     user: editUserEntry.user,
     img: editUserEntry.img,
@@ -42,7 +44,16 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
   })
   return +result
 }
-
+export const editCover = async (id: number, editCover: any ): Promise<number> => {
+  const editUser = {
+    cover: editCover.cover,
+    cover_ID: editCover.cover_ID,
+  }
+  const result = await userModel.update(editUser, { where: { User_ID: id } }).then(result => {
+    return result
+  })
+  return +result
+}
 export const findUser = (id: number): Promise<userEntry[]> | undefined => {
   return userModel.findOne({ attributes: {exclude: ['password']}, where: { User_ID: id } }) as any
 }

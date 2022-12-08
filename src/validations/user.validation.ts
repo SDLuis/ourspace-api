@@ -15,7 +15,7 @@ const parseLastName = (LastNameFromRequest: any): string => {
   return LastNameFromRequest
 }
 
-const parseRole = (RoleFromRequest: any): role => {
+export const parseRole = (RoleFromRequest: any): role => {
   if (!isRole(RoleFromRequest) || notEmpty(RoleFromRequest)) {
     throw new Error('Invalid Role')
   }
@@ -51,7 +51,9 @@ export const toEditUser = (object: any): EditUserEntry => {
   const newUser: EditUserEntry = {
     First_Name: parseFirstName(object.First_Name),
     Last_Name: parseLastName(object.Last_Name),
-    role: parseRole(object.role),
+    role: object.role,
+    Location: object.Location,
+    Date_Of_Birth: object.Date_Of_Birth,
     user: parseUser(object.user),
     password: parsePassword(object.password),
     img: object.img,
