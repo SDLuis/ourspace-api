@@ -22,7 +22,7 @@ const parseLocation = (LocationFromRequest: any): string => {
   return LocationFromRequest
 }
 
-const parseImg = (imgFromRequest: any): string => {
+export const parseImg = (imgFromRequest: any): string => {
   if (!isString(imgFromRequest) || notEmpty(imgFromRequest)) {
     throw new Error('Invalid Image')
   }
@@ -40,8 +40,8 @@ export const toNewPost = (object: any, userIdFromRequest: any): NewPostEntry => 
     Post_Type: parsePostType(object.Post_Type),
     User_ID: parseUserID(userIdFromRequest),
     Location: parseLocation(object.Location),
-    img: parseImg(object.img),
-    img_ID: parseImg(object.img_ID),
+    img: object.img,
+    img_ID: object.img_ID,
     description: parseDescription(object.description)
   }
   return newPost

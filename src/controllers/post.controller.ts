@@ -21,22 +21,33 @@ export const getPosts = async (_req: Request, res: Response): Promise<void> => {
 
 export const newPost = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path as string)
-    fs.unlink(req.file?.path as string, function (err) {
-      if (err != null) {
-        console.log(err)
+    if (req.file != null) {
+      const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path)
+      fs.unlink(req.file?.path, function (err) {
+        if (err != null) {
+          console.log(err)
+        }
+      })
+      const body = {
+        Post_Type: req.body.Post_Type,
+        Location: req.body.Location,
+        img: secure_url,
+        img_ID: public_id,
+        description: req.body.description
       }
-    })
-    const body = {
-      Post_Type: req.body.Post_Type,
-      Location: req.body.Location,
-      img: secure_url,
-      img_ID: public_id,
-      description: req.body.description
+      const NewPostEntry = postValidation.toNewPost(body, (req as any).token.User_ID)
+      const addedPost = await postService.addPost(NewPostEntry)
+      res.status(200).send(addedPost)
+    } else {
+      const body = {
+        Post_Type: req.body.Post_Type,
+        Location: req.body.Location,
+        description: req.body.description
+      }
+      const NewPostEntry = postValidation.toNewPost(body, (req as any).token.User_ID)
+      const addedPost = await postService.addPost(NewPostEntry)
+      res.status(200).send(addedPost)
     }
-    const NewPostEntry = postValidation.toNewPost(body, (req as any).token.User_ID)
-    const addedPost = await postService.addPost(NewPostEntry)
-    res.status(200).send(addedPost)
   } catch (e: any) {
     res.status(400).send(e.message)
   }
