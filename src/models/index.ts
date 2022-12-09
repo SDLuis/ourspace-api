@@ -14,6 +14,10 @@ const sequelize = new Sequelize(
     host: dbConfig.host,
     models: [userModel, postModel, commentModel, reactionModel],
     dialect: dbConfig.dialect as Dialect,
+    define: {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_general_ci'
+    },
     pool: {
       max: dbConfig.pool.max,
       min: dbConfig.pool.min,
