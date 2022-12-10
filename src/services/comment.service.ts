@@ -41,7 +41,10 @@ export const findCommentsByPostId = async (id: number): Promise<commentEntry[] |
   return await commentModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: postModel }],
-    where: { Post_ID: id }
+    where: { Post_ID: id },
+    order: [
+      ['createdAt', 'DESC']
+    ]
   }) as any
 }
 
