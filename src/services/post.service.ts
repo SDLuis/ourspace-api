@@ -96,6 +96,7 @@ export const findPostByUser = (id: number): Promise<IPostWithoutModels[]> | unde
       { model: commentModel },
       { model: reactionModel }
     ],
-    where: { User_ID: id }
+    where: { User_ID: id },
+    order: [['Post_ID', 'DESC']]
   })
 }
