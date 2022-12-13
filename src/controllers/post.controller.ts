@@ -9,9 +9,11 @@ import { findUserByUser } from '../services/user.service'
 import { v2 as cloudinary } from 'cloudinary'
 import fs from 'fs'
 
-export const getPosts = async (_req: Request, res: Response): Promise<void> => {
+export const getPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    await postService.getPosts().then((response) => {
+    const limit: number = req.query.limit as unknown as number ?? 6
+    const offset: number = req.query.offset as unknown as number ?? 0
+    await postService.getPosts(limit, offset).then((response) => {
       res.status(200).send(response)
     })
   } catch (e: any) {
@@ -96,8 +98,10 @@ export const findPost = async (req: Request, res: Response): Promise<any> => {
 export const findPostByUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const user = req.params.user
+    const limit: number = req.query.limit as unknown as number ?? 6
+    const offset: number = req.query.offset as unknown as number ?? 0
     const { User_ID } = await findUserByUser(user) as any
-    const Post = await postService.findPostByUser(User_ID)
+    const Post = await postService.findPostByUser(User_ID, limit, offset)
     res.status(200).send(Post)
   } catch (e: any) {
     res.status(400).send(e.message)
@@ -145,7 +149,9 @@ export const reqPost = async (req: Request, res: Response, next: NextFunction): 
 export const ownPosts = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = (req as any).token.User_ID
-    const Post = (await postService.ownPosts(id)) as any
+    const limit: number = req.query.limit as unknown as number ?? 6
+    const offset: number = req.query.offset as unknown as number ?? 0
+    const Post = (await postService.ownPosts(id, limit, offset)) as any
     res.status(200).send(Post)
   } catch (e: any) {
     res.status(400).send(e.message)

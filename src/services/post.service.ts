@@ -4,11 +4,13 @@ import { postType, postEntry, postModel, NewPostEntry, NotSensistiveInfoPost, IP
 import { commentModel } from '../models/comment.model'
 import { reactionModel } from '../models/reaction.model'
 
-export const getPosts = async (): Promise<postEntry[]> => {
+export const getPosts = async (limitParam: number, offsetParam: number): Promise<postEntry[]> => {
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: commentModel },
       { model: reactionModel }],
+    offset: +offsetParam,
+    limit: +limitParam,
     order: [
       ['Post_ID', 'DESC']
     ]
@@ -81,21 +83,25 @@ export const deletePost = (id: number): Promise<number> | undefined => {
   return postModel.destroy({ where: { Post_ID: id } })
 }
 
-export const ownPosts = (id: number): Promise<IPostWithoutModels[]> | undefined => {
+export const ownPosts = (id: number, limitParam: number, offsetParam: number): Promise<IPostWithoutModels[]> | undefined => {
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: commentModel },
       { model: reactionModel }],
+    offset: +offsetParam,
+    limit: +limitParam,
     where: { User_ID: id },
     order: [['Post_ID', 'DESC']]
   })
 }
 
-export const findPostByUser = (id: number): Promise<IPostWithoutModels[]> | undefined => {
+export const findPostByUser = (id: number, limitParam: number, offsetParam: number): Promise<IPostWithoutModels[]> | undefined => {
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: commentModel },
       { model: reactionModel }],
+    offset: +offsetParam,
+    limit: +limitParam,
     where: { User_ID: id },
     order: [['Post_ID', 'DESC']]
   })
