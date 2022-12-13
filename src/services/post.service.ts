@@ -57,7 +57,8 @@ export const editPost = async (id: number, newPostEntry: NewPostEntry): Promise<
 export const findPost = (id: number): Promise<postEntry[]> | undefined => {
   return postModel.findOne({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
-      { model: commentModel }],
+      { model: commentModel },
+      { model: reactionModel }],
     where: { Post_ID: id }
   }) as any
 }
@@ -69,7 +70,8 @@ export const test = (params: string): Promise<postEntry[]> | undefined => {
 export const findPostByType = (postType: postType): Promise<postEntry[]> | undefined => {
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
-      { model: commentModel }],
+      { model: commentModel },
+      { model: reactionModel }],
     where: { Post_Type: postType },
     order: [['Post_ID', 'DESC']]
   }) as any
@@ -83,8 +85,7 @@ export const ownPosts = (id: number): Promise<IPostWithoutModels[]> | undefined 
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: commentModel },
-      { model: reactionModel }
-    ],
+      { model: reactionModel }],
     where: { User_ID: id },
     order: [['Post_ID', 'DESC']]
   })
@@ -94,8 +95,7 @@ export const findPostByUser = (id: number): Promise<IPostWithoutModels[]> | unde
   return postModel.findAll({
     include: [{ model: userModel, attributes: { exclude: ['password'] } },
       { model: commentModel },
-      { model: reactionModel }
-    ],
+      { model: reactionModel }],
     where: { User_ID: id },
     order: [['Post_ID', 'DESC']]
   })
