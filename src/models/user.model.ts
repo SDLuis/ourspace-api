@@ -81,7 +81,7 @@ export class userModel extends Model implements IUser {
   @NotEmpty
   @AllowNull(true)
   @Column({
-    type: DataType.DATE
+    type: DataType.DATEONLY
   })
     Date_Of_Birth!: Date
 
