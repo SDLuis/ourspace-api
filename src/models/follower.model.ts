@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript'
 
 export interface IFollower {
+  ID?: number
   Follower_ID?: number
   User_ID?: number
   createdAt: Date
@@ -15,7 +16,7 @@ export interface IFollower {
 }
 
 export type followerEntry = IFollower
-export type NewFollowerEntry = Omit<IFollower, 'Follower_ID' | 'userModel' | 'createdAt'>
+export type NewFollowerEntry = Omit<IFollower, 'ID' | 'userModel' | 'createdAt'>
 export type IFollowerWithoutUserModel = Omit<IFollower, 'userModel' >
 
 @Table({
@@ -29,7 +30,7 @@ export class followerModel extends Model implements IFollowerWithoutUserModel {
     primaryKey: true,
     autoIncrement: true
   })
-    Follower_ID: number | undefined
+    ID: number | undefined
 
   @NotEmpty
   @AllowNull(false)
@@ -37,6 +38,13 @@ export class followerModel extends Model implements IFollowerWithoutUserModel {
     type: DataType.INTEGER
   })
     User_ID: number | undefined
+
+  @NotEmpty
+  @AllowNull(false)
+  @Column({
+    type: DataType.INTEGER
+  })
+    Follower_ID: number | undefined
 
   @Column({
     type: DataType.DATE
