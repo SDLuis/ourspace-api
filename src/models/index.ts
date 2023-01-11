@@ -36,8 +36,8 @@ const db = {
 userModel.hasMany(postModel, { foreignKey: 'User_ID' })
 postModel.belongsTo(userModel, { foreignKey: 'User_ID' })
 
-userModel.hasMany(followerModel, { foreignKey: 'User_ID' })
-followerModel.belongsTo(userModel, { foreignKey: 'User_ID' })
+userModel.hasMany(followerModel)
+followerModel.belongsTo(userModel, { foreignKey: 'Follower_ID' })
 
 userModel.hasMany(commentModel, { foreignKey: 'User_ID' })
 commentModel.belongsTo(userModel, { foreignKey: 'User_ID' })
