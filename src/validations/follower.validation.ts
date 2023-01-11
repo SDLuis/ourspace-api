@@ -14,7 +14,7 @@ const parseFollowerID = (followerIDFromRequest: any): number => {
   return followerIDFromRequest
 }
 
-export const toNewFollower = (followerIDFromRequest: any, userIdFromRequest: any): NewFollowerEntry => {
+export const toNewFollower = (userIdFromRequest: any, followerIDFromRequest: any): NewFollowerEntry => {
   const newFollower: NewFollowerEntry = {
     User_ID: parseUserID(userIdFromRequest),
     Follower_ID: parseFollowerID(followerIDFromRequest)
