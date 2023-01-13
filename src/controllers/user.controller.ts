@@ -7,9 +7,11 @@ import * as userValidation from '../validations/user.validation'
 import { v2 as cloudinary } from 'cloudinary'
 import fs from 'fs'
 
-export const getUser = async (_req: Request, res: Response): Promise<any> => {
+export const getUser = async (req: Request, res: Response): Promise<any> => {
   try {
-    await userService.getUsers().then((result: any) => {
+    const limit: number = req.query.limit as unknown as number ?? 3
+    const offset: number = req.query.offset as unknown as number ?? 0
+    await userService.getUsers(limit, offset).then((result: any) => {
       res.status(200).send(userService.getUsersWithoutSensitiveInfo(result))
     })
   } catch (e: any) {

@@ -3,9 +3,11 @@ import authConfig from '../config/auth.config'
 import '../models/index'
 import { userEntry, NotSensistiveInfoUser, EditUserEntry, userModel } from '../models/user.model'
 
-export const getUsers = async (): Promise<userEntry[]> => {
+export const getUsers = async (limitParam: number, offsetParam: number): Promise<userEntry[]> => {
   return await userModel
     .findAll({
+      offset: +offsetParam,
+      limit: +limitParam,
       order: [
         ['User_ID', 'DESC']
       ]
