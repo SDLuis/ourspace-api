@@ -109,6 +109,16 @@ export const findUserByUser = async (req: Request, res: Response): Promise<any> 
   }
 }
 
+export const findUsersByUser = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const user = req.params.user
+    const usersFound = await userService.findUserByUser(user)
+    res.status(200).send(usersFound)
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
+
 export const deleteUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id

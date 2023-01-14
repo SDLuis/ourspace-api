@@ -61,6 +61,10 @@ export const findUser = (id: number): Promise<userEntry[]> | undefined => {
   return userModel.findOne({ attributes: {exclude: ['password']}, where: { User_ID: id } }) as any
 }
 export const findUserByUser = (user: string): Promise<userEntry[]> | undefined => {
+  return userModel.findOne({ attributes: {exclude: ['password']}, where: { user: user } }) as any
+}
+
+export const findUsersByUser = (user: string): Promise<userEntry[]> | undefined => {
   return userModel.findAll({ attributes: {exclude: ['password']}, where: { user:{ [Op.like]: `%${user}%` }} }) as any
 }
 
