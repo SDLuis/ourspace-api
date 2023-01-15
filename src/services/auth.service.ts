@@ -65,7 +65,7 @@ export const Login = async (
           { id: user.User_ID, name: `${user.First_Name} ${user.Last_Name}`, user: user.user, img: user.img },
           'ourspace',
           {
-            expiresIn: '24h'
+            expiresIn: '6h'
           }
         )
         const res = {

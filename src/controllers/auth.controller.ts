@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       // WORKINGG!!!!!!!
       const token = response.token
       res.cookie('jwt', token, {
-        maxAge: 0o1 * 60 * 60 * 1000,
+        maxAge: 0o6 * 60 * 60 * 1000,
         secure: true,
         httpOnly: true,
         sameSite: 'none'
