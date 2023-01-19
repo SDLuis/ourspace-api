@@ -6,7 +6,7 @@ import { postModel } from './post.model'
 import { userModel } from './user.model'
 import { followerModel } from './follower.model'
 import { reactionModel } from './reaction.model'
-import { conversationModel } from './conversation'
+import { conversationModel } from './conversation.model'
 
 const sequelize = new Sequelize(
   dbConfig.database as string,
@@ -41,7 +41,7 @@ userModel.hasMany(followerModel)
 followerModel.belongsTo(userModel, { foreignKey: 'Follower_ID' })
 
 userModel.hasMany(conversationModel)
-followerModel.belongsTo(userModel, { foreignKey: 'Receiver_ID' })
+conversationModel.belongsTo(userModel, { foreignKey: 'Receiver_ID' })
 
 userModel.hasMany(commentModel, { foreignKey: 'User_ID' })
 commentModel.belongsTo(userModel, { foreignKey: 'User_ID' })
