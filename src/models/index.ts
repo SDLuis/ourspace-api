@@ -7,6 +7,7 @@ import { userModel } from './user.model'
 import { followerModel } from './follower.model'
 import { reactionModel } from './reaction.model'
 import { conversationModel } from './conversation.model'
+import { messageModel } from './message.model'
 
 const sequelize = new Sequelize(
   dbConfig.database as string,
@@ -14,7 +15,7 @@ const sequelize = new Sequelize(
   dbConfig.password,
   {
     host: dbConfig.host,
-    models: [userModel, followerModel, postModel, commentModel, reactionModel, conversationModel],
+    models: [userModel, followerModel, postModel, commentModel, reactionModel, conversationModel, messageModel],
     dialect: dbConfig.dialect as Dialect,
     define: {
       charset: 'utf8mb4',
@@ -42,6 +43,9 @@ followerModel.belongsTo(userModel, { foreignKey: 'Follower_ID' })
 
 userModel.hasMany(conversationModel)
 conversationModel.belongsTo(userModel, { foreignKey: 'Receiver_ID' })
+
+userModel.hasMany(messageModel)
+messageModel.belongsTo(userModel, { foreignKey: 'Receiver_ID' })
 
 userModel.hasMany(commentModel, { foreignKey: 'User_ID' })
 commentModel.belongsTo(userModel, { foreignKey: 'User_ID' })
