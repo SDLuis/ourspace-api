@@ -52,13 +52,6 @@ export class messageModel extends Model implements IMessageWithoutUserModel {
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.INTEGER
-  })
-    Receiver_ID: number | undefined
-
-  @NotEmpty
-  @AllowNull(false)
-  @Column({
     type: DataType.STRING(1000)
   })
     description!: string
