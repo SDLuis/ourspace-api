@@ -9,7 +9,7 @@ import {
 
 export interface IConversation {
   Conversation_ID?: number
-  members?: string[]
+  members?: object
   createdAt: Date
   updatedAt: Date
   userModel: object
@@ -35,9 +35,9 @@ export class conversationModel extends Model implements IConversationWithoutUser
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.ARRAY(DataType.STRING)
+    type: DataType.JSON
   })
-    members: string[] | undefined
+    members: object | undefined
 
   @Column({
     type: DataType.DATE

@@ -16,11 +16,8 @@ export const getConversations = async (): Promise<conversationEntry[]> => {
     }) as any
 }
 
-export const addNewConversation = async (NewConversationEntry: NewConversationEntry): Promise<NewConversationEntry> => {
-  const newConversation = {
-    ...NewConversationEntry
-  }
-  const conversation = await conversationModel.create(newConversation)
+export const addNewConversation = async (NewConversationEntry: NewConversationEntry): Promise<any> => {
+  const conversation = await conversationModel.create({ members: NewConversationEntry })
   return conversation
 }
 
