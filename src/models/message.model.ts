@@ -10,7 +10,6 @@ import {
 export interface IMessage {
   Message_ID?: number
   Conversation_ID?: number
-  Receiver_ID?: number
   Sender_ID?: number
   description?: string
   createdAt: Date
