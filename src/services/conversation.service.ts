@@ -24,7 +24,7 @@ export const addNewConversation = async (NewConversationEntry: NewConversationEn
   return conversation
 }
 
-export const deleteComment = (id: number): Promise<number> | undefined => {
+export const deleteConversation = (id: number): Promise<number> | undefined => {
   return conversationModel.destroy({ where: { Conversation_ID: id } }) as any
 }
 
