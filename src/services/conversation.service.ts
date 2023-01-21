@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-floating-promises */
-import { Op } from 'sequelize'
+import sequelize from 'sequelize'
 import { userModel } from '../models/user.model'
+import { messageModel } from '../models/message.model'
 import '../models/index'
 import { conversationModel, conversationEntry, NewConversationEntry, IConversationWithoutUserModel } from '../models/conversation.model'
 
@@ -26,5 +27,5 @@ export const deleteConversation = (id: number): Promise<number> | undefined => {
 }
 
 export const ownConversations = async (id: number): Promise<IConversationWithoutUserModel[] | undefined> => {
-  return conversationModel.findAll({ where: { members: { [Op.in]: [id] } }, order: ['Conversation_ID', 'DESC'] }) as any
+  return conversationModel.findAll({ where: sequelize.where(sequelize.fn('JSON_CONTAINS', sequelize.col('members'), sequelize.literal(`"${id}"`)), 1), include: messageModel }) as any
 }
