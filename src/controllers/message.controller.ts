@@ -5,7 +5,8 @@ export const newMessage = async (req: Request, res: Response): Promise<void> => 
   try {
     const body = {
       Sender_ID: (req as any).token.User_ID,
-      description: req.body.secondUser
+      Conversation_ID: req.body.Conversation_ID,
+      description: req.body.description
     }
     const addedConversation = await messageService.addNewMessage(body)
     res.status(200).send(addedConversation)
@@ -31,7 +32,7 @@ export const deleteMessage = async (req: Request, res: Response): Promise<any> =
 
 export const getMessagesByConversations = async (req: Request, res: Response): Promise<any> => {
   try {
-    const id = req.body.conversationID
+    const id = +req.params.conversationID
     const Messages = (await messageService.getMessagesByConversation(id)) as any
     res.status(200).send(Messages)
   } catch (e: any) {

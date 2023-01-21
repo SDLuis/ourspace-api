@@ -6,6 +6,6 @@ import * as authController from '../controllers/auth.controller'
 const router = Router()
 
 router.post('/add', authController.auth, messageRoutes.newMessage)
-router.get('/find', authController.auth, messageRoutes.getMessagesByConversations)
+router.get('/find/:conversationID', authController.auth, messageRoutes.getMessagesByConversations)
 
 export default router
