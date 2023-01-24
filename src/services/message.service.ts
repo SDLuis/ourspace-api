@@ -28,5 +28,5 @@ export const deleteMessage = (id: number): Promise<number> | undefined => {
 }
 
 export const getMessagesByConversation = async (conversationId: number): Promise<messageEntry[] | undefined> => {
-  return messageModel.findAll({ where: { Conversation_ID: conversationId }, order: [['Conversation_ID', 'DESC']], include: { model: userModel, attributes: { exclude: ['password'] } } }) as any
+  return messageModel.findAll({ where: { Conversation_ID: conversationId }, order: [['Conversation_ID', 'DESC']], include: { model: userModel, attributes: { exclude: ['password', 'Date_Of_Birth', 'Location', 'cover', 'cover_ID', 'img_ID'] } } }) as any
 }
