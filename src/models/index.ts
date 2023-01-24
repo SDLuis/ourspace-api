@@ -44,7 +44,7 @@ followerModel.belongsTo(userModel, { foreignKey: 'Follower_ID' })
 userModel.hasMany(messageModel)
 messageModel.belongsTo(userModel, { foreignKey: 'Sender_ID' })
 
-conversationModel.hasMany(messageModel)
+conversationModel.hasMany(messageModel, { foreignKey: 'Conversation_ID' })
 messageModel.belongsTo(conversationModel, { foreignKey: 'Conversation_ID' })
 
 userModel.hasMany(commentModel, { foreignKey: 'User_ID' })

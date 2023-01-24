@@ -27,5 +27,5 @@ export const deleteConversation = (id: number): Promise<number> | undefined => {
 }
 
 export const ownConversations = async (id: number): Promise<IConversationWithoutUserModel[] | undefined> => {
-  return conversationModel.findAll({ where: sequelize.where(sequelize.fn('JSON_CONTAINS', sequelize.col('members'), sequelize.literal(`"${id}"`)), 1), include: messageModel }) as any
+  return conversationModel.findAll({ where: sequelize.where(sequelize.fn('JSON_CONTAINS', sequelize.col('members'), sequelize.literal(`"${id}"`)), 1), include: { model: messageModel } }) as any
 }
