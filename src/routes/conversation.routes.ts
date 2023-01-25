@@ -7,6 +7,6 @@ const router = Router()
 
 router.post('/add', authController.auth, conversationRoutes.newConversation)
 router.get('/owner', authController.auth, conversationRoutes.ownConversation)
-router.delete('/delete', authController.auth, conversationRoutes.deleteConversation)
+router.delete('/delete/:conversationID', authController.auth, conversationRoutes.deleteConversation)
 
 export default router
