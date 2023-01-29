@@ -1,10 +1,10 @@
-import app from './libs/middlewares'
+import server from './libs/middlewares'
 import db from './models/index'
 
 /* eslint-disable */
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App is running at http://localhost:${PORT} in development mode
 Press CTRL-C to stop`)
 db.sequelize

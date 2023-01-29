@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import express from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
 import cors from 'cors'
 import authRoutes from '../routes/auth.routes'
 import userRoutes from '../routes/user.routes'
@@ -18,6 +22,57 @@ cloudinary.config({
 })
 
 const app = express()
+const server = http.createServer(app)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+let users: any[] = []
+
+const addUser = (userId: any, socketId: string) => {
+  !users.some((user) => user.User_ID === userId) &&
+    users.push({ userId, socketId })
+  console.log(users)
+}
+
+const removeUser = (socketId: string) => {
+  users = users.filter((user) => user.socketId !== socketId)
+}
+
+const getUser = (userId: any) => {
+  return users.find((user) => user.userId === userId)
+}
+
+io.on('connection', (socket) => {
+  // when ceonnect
+  console.log('a user connected.')
+
+  // take userId and socketId from user
+  socket.on('addUser', (userId) => {
+    addUser(userId, socket.id)
+    console.log(userId, socket.id)
+    io.emit('getUsers', users)
+  })
+
+  // send and get message
+  socket.on('sendMessage', ({ Sender_ID, receiverId, description }) => {
+    const user = getUser(receiverId)
+    console.log(user)
+    io.to(user.socketId).emit('getMessage', {
+      Sender_ID,
+      description
+    })
+  })
+
+  // when disconnect
+  socket.on('disconnect', () => {
+    console.log('a user disconnected!')
+    removeUser(socket.id)
+    io.emit('getUsers', users)
+  })
+})
 
 app.use(express.json())
 app.use(cookieparser())
@@ -40,4 +95,4 @@ app.get('/', (_req, res) => {
   res.status(200).send('WELCOME!!')
 })
 
-export default app
+export default server
