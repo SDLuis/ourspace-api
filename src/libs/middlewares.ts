@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import express from 'express'
@@ -59,11 +61,12 @@ io.on('connection', (socket) => {
   // send and get message
   socket.on('sendMessage', ({ Sender_ID, receiverId, description }) => {
     const user = getUser(receiverId)
-    console.log(user)
-    io.to(user.socketId).emit('getMessage', {
-      Sender_ID,
-      description
-    })
+    user?.socketId
+      ? io.to(user?.socketId).emit('getMessage', {
+        Sender_ID,
+        description
+      })
+      : null
   })
 
   // when disconnect
